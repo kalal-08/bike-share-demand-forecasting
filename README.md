@@ -62,7 +62,7 @@ The analysis uses official New York City trip-history data for April, May, and J
 | Station-hour rows | 43,680 |
 | Zero-activity station-hours | 2,476 (5.67%) |
 
-Zero-demand hours are retained because they represent valid station behavior, not missing observations. Raw files and generated processed data are excluded from Git.
+Zero-demand hours are retained because they represent valid station behavior, not missing observations. Raw files remain excluded from Git. The final processed prediction output is versioned as a small, reviewable result artifact; other generated processed data remains excluded.
 
 ## Workflow
 
@@ -155,6 +155,8 @@ The test period was not used for model selection or hyperparameter changes.
 
 ![Actual and predicted departures](outputs/figures/actual_vs_predicted.png)
 
+This example uses the highest-activity station selected from the training period and the first 72 test hours. The fixed selection rule avoids choosing a station or time window based on favorable test results.
+
 ## What the results mean
 
 On validation data, Random Forest reduced WAPE by 16.9% for departures and 17.9% for arrivals relative to Seasonal Naive. Relative to Poisson Regression, the reductions were 31.6% and 32.9%.
@@ -179,9 +181,23 @@ Interpretation:
 
 `priority_score` is the absolute predicted net flow. Stations are ranked independently within each hour, with rank 1 representing the largest forecast imbalance.
 
+Example output for the five highest-priority stations in the final test hour (values rounded for display):
+
+| Station | Hour | Predicted departures | Predicted arrivals | Net flow | Pressure | Rank |
+|---|---|---:|---:|---:|---|---:|
+| 5905.12 | 2026-06-30 23:00 | 17.0 | 5.7 | -11.3 | Deficit | 1 |
+| 5980.10 | 2026-06-30 23:00 | 7.8 | 0.9 | -6.8 | Deficit | 2 |
+| 6492.08 | 2026-06-30 23:00 | 11.5 | 6.0 | -5.5 | Deficit | 3 |
+| 5763.03 | 2026-06-30 23:00 | 11.2 | 15.5 | 4.3 | Surplus | 4 |
+| 6331.01 | 2026-06-30 23:00 | 9.6 | 12.8 | 3.3 | Surplus | 5 |
+
+[View the complete prediction output](data/processed/rebalancing_predictions.csv) (7,200 station-hour rows with full-precision values).
+
 This output prioritizes operational attention. It is not an optimized dispatch recommendation because the project does not include live station inventory, dock capacity, vehicle capacity, routing constraints, or operating costs.
 
 ![Predicted station imbalance](outputs/figures/rebalancing_priorities.png)
+
+The figure shows the ten largest absolute predicted net flows at the final test hour. Its fixed timestamp and ranking rule avoid manual example selection.
 
 ## Error analysis
 
@@ -197,7 +213,7 @@ Both targets were hardest to predict at hour 17. Mean absolute error at that hou
 bike-share-demand-forecasting/
 |-- data/
 |   |-- raw/                 # Local Citi Bike ZIP files; ignored by Git
-|   `-- processed/           # Generated predictions; ignored by Git
+|   `-- processed/           # Versioned final prediction output
 |-- notebooks/
 |   `-- 01_eda.ipynb         # Raw-sample and station-hour EDA
 |-- outputs/

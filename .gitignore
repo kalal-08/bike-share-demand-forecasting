@@ -15,6 +15,7 @@ data/raw/*
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+!data/processed/rebalancing_predictions.csv
 
 # Generated outputs - keep final figures for GitHub
 outputs/*
