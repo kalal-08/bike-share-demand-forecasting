@@ -1,0 +1,13 @@
+* text=auto
+.env.example text eol=lf
+.gitattributes text eol=lf
+.gitignore text eol=lf
+*.py text eol=lf
+*.sql text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.ini text eol=lf
+*.json text eol=lf
+*.ipynb text eol=lf
+*.png binary
+*.zip binary

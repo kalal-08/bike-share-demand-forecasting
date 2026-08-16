@@ -1,0 +1,31 @@
+# Environment and secrets
+.venv/
+.env
+pgpass.conf
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+*.log
+
+# Dataset files
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Generated outputs - keep final figures for GitHub
+outputs/*
+!outputs/figures/
+!outputs/figures/**
+
+# Saved model files
+*.pkl
+*.joblib
+
+# Editor and OS files
+.vscode/
+.DS_Store
+Thumbs.db
